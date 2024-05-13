@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "@nestjs/swagger": "^7.3.1",
+    "@nestjs/typeorm": "^10.0.2",
+    "@oazapfts/runtime": "^1.0.2",
+    "@sveltejs/adapter-static": "^3.0.1",
+    "copy-image-clipboard": "^2.1.2",
+    "luxon": "^3.4.4",
+    "svelte": "^4.2.15",
+    "typeorm": "^0.3.20"
+  }
+}

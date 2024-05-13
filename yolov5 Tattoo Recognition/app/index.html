@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tattoo Gallery</title>
+</head>
+<body>
+    <h1>Tattoo Gallery</h1>
+    <div id="gallery">
+        {% for image in images %}
+            <img src="{{ url_for('static', filename=image) }}" alt="Tattoo Image" style="width:100px; cursor:pointer;" onclick="describeImage('{{ image }}')">
+        {% endfor %}
+    </div>
+    <div id="description"></div>
+    <script>
+        function describeImage(imageName) {
+            fetch('/describe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({imageName}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('description').innerText = data.description;
+            });
+        }
+    </script>
+</body>
+</html>

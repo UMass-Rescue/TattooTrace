@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['tattoo']
+
+roboflow:
+  workspace: gabijapocevicemajor-7dvfl
+  project: tattoo-localization-and-recognition
+  version: 39
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/gabijapocevicemajor-7dvfl/tattoo-localization-and-recognition/dataset/39

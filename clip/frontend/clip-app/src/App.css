@@ -1,0 +1,53 @@
+/* Apply a reset to remove default browser styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px 40px; /* Reduced padding */
+  color: white;
+  text-align: center;
+}
+
+.App-header h1 {
+  margin-bottom: 10px; /* Smaller margin */
+  font-size: 24px; /* Smaller font size */
+}
+
+.App-header p {
+  font-size: 16px; /* Adjusted font size for subtitle */
+}
+
+.gallery-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f0f0f0; /* Light grey background for the gallery */
+}
+
+.gallery-container img {
+  cursor: pointer;
+  width: 150px; /* Set a fixed width for images */
+  height: 150px; /* Set a fixed height for images */
+  object-fit: cover; /* Ensure the aspect ratio is maintained */
+  border-radius: 10px; /* Optional: rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* If you want to add a hover effect on the images */
+.gallery-container img:hover {
+  opacity: 0.9; /* Slightly see-through on hover */
+  transform: scale(1.05); /* Scale up images on hover */
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}

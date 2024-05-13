@@ -1,0 +1,112 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+
+.card {
+  padding: 2em;
+}
+
+.intro {
+  text-align: left;
+  font-size: 1.5em;
+  color: #ffffff;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Align items to the start */
+}
+
+.images-container {
+  display: flex;
+  justify-content: flex-end; /* Align image to the right */
+}
+
+.image-container {
+  flex: 1;
+}
+
+.tattoo-image {
+  max-width: 50%; /* Adjust as needed */
+  height: auto;
+}
+
+.contact-block {
+  margin-top: 20px;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.contact-image {
+  max-width: 100%;
+}
+
+.contact-details {
+  margin-top: 10px;
+}
+
+
+.trace-button,
+.contact-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+  margin-top: 20px;
+}
+
+.trace-button {
+  background-color: #cce5f9; /* Example color */
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 0;
+  margin-right: 30px;
+}
+
+.contact-button {
+  background-color: #242424; /* Example color */
+  color: white;
+  border: 1px solid #fff;
+  border-radius: 0;
+}
+
+.github-button {
+  margin-top: 10px;
+  background-color: #43d4fcaa;
+  color: #fff;
+  border-radius: 0;
+}

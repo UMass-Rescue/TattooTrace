@@ -1,0 +1,123 @@
+# See:
+# - https://immich.app/docs/developer/setup
+# - https://immich.app/docs/developer/troubleshooting
+
+version: "3.8"
+
+name: immich-dev
+
+x-server-build: &server-common
+  image: immich-server-dev:latest
+  build:
+    context: ../
+    dockerfile: server/Dockerfile
+    target: dev
+  restart: always
+  volumes:
+    - ../server:/usr/src/app
+    - ../open-api:/usr/src/open-api
+    - ${UPLOAD_LOCATION}/photos:/usr/src/app/upload
+    - ${UPLOAD_LOCATION}/photos/upload:/usr/src/app/upload/upload
+    - /usr/src/app/node_modules
+    - /etc/localtime:/etc/localtime:ro
+    - ml-results:/usr/src/app/ml-results
+  env_file:
+    - .env
+  ulimits:
+    nofile:
+      soft: 1048576
+      hard: 1048576
+
+services:
+  immich-server:
+    container_name: immich_server
+    command: [ "/usr/src/app/bin/immich-dev", "immich" ]
+    <<: *server-common
+    ports:
+      - 3001:3001
+      - 9230:9230
+    depends_on:
+      - redis
+      - database
+
+  immich-microservices:
+    container_name: immich_microservices
+    command: [ "/usr/src/app/bin/immich-dev", "microservices" ]
+    <<: *server-common
+    # extends:
+    #   file: hwaccel.transcoding.yml
+    #   service: cpu # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
+    ports:
+      - 9231:9230
+    depends_on:
+      - database
+      - immich-server
+
+  immich-web:
+    container_name: immich_web
+    image: immich-web-dev:latest
+    build:
+      context: ../web
+    command: "/usr/src/app/bin/immich-web"
+    env_file:
+      - .env
+    ports:
+      - 2283:3000
+      - 24678:24678
+    volumes:
+      - ../web:/usr/src/app
+      - ../open-api/:/usr/src/open-api/
+      - /usr/src/app/node_modules
+      - ml-results:/usr/src/app/ml-results
+    ulimits:
+      nofile:
+        soft: 1048576
+        hard: 1048576
+    restart: unless-stopped
+    depends_on:
+      - immich-server
+
+  immich-machine-learning:
+    container_name: immich_machine_learning
+    image: immich-machine-learning-dev:latest
+    # extends:
+    #   file: hwaccel.ml.yml
+    #   service: cpu # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference
+    build:
+      context: ../machine-learning
+      dockerfile: Dockerfile
+      args:
+        - DEVICE=cpu # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference
+    ports:
+      - 3003:3003
+    volumes:
+      - ../machine-learning:/usr/src/app
+      - model-cache:/cache
+      - ml-results:/ml-results
+    env_file:
+      - .env
+    depends_on:
+      - database
+    restart: unless-stopped
+
+  redis:
+    container_name: immich_redis
+    image: redis:6.2-alpine@sha256:51d6c56749a4243096327e3fb964a48ed92254357108449cb6e23999c37773c5
+
+  database:
+    container_name: immich_postgres
+    image: tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+    volumes:
+      - ${UPLOAD_LOCATION}/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  model-cache:
+  ml-results:
